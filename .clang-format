@@ -1,0 +1,51 @@
+# generally mesa style
+AlignAfterOpenBracket: true
+AlignConsecutiveMacros: true
+
+AllowAllArgumentsOnNextLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+
+AlwaysBreakAfterReturnType: TopLevelDefinitions
+
+BraceWrapping:
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterStruct: false
+  BeforeElse: false
+  SplitEmptyFunction: true
+
+BinPackArguments: true
+BinPackParameters: true
+
+BreakBeforeBraces: Custom
+
+ColumnLimit: 0
+PenaltyBreakBeforeFirstCallParameter: 1
+PenaltyExcessCharacter: 100
+
+ContinuationIndentWidth: 4
+IndentWidth: 4
+UseTab: Never
+
+Cpp11BracedListStyle: true
+
+#SpaceAfterCStyleCast: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: false
+SpacesInContainerLiterals: false
+
+PointerAlignment: Right
+
+# gnu style spacing in function calls
+SpaceAfterCStyleCast: true
+SpaceBeforeParens: Always
+SpacesBeforeTrailingComments: 1
+
+ForEachMacros:   ['list_for_each',
+                 'list_for_each_safe',
+                 'list_for_each_continue',
+                 'list_for_each_reverse',
+                 'list_for_each_safe_reverse',
+                 'list_for_each_continue_reverse']
