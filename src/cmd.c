@@ -52,7 +52,7 @@ ds_cmd_install (char *name, char *arg, char *help, int (*func) (int ac, char *av
 }
 
 int
-ds_quit_cmd (int ac, char *av[])
+ds_cmd_quit (int ac, char *av[])
 {
     ds_end_loop ();
     return 0;
@@ -61,7 +61,7 @@ ds_quit_cmd (int ac, char *av[])
 void
 ds_cmd_standard_install ()
 {
-    ds_cmd_install ("quit", "", "quit", ds_quit_cmd);
+    ds_cmd_install ("quit", "", "quit", ds_cmd_quit);
 }
 
 static int

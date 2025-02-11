@@ -4,5 +4,6 @@
 char *ds_basename (char *path);
 void ds_fork ();
 void ds_end_loop ();
+char *ds_format_new (char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 
 #endif // MISC_H_

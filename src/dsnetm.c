@@ -135,6 +135,7 @@ protohandler_add (int protocol, int priority,
     list_for_each (proto, &proto_list, proto_list) {
         if (proto->proto_id == protocol) {
             found = proto;
+            break;
         }
     }
 
@@ -208,14 +209,12 @@ parse_opt (int key, char *arg, struct argp_state *state)
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
 int
-main (int argc, char *argv[])
+dsnetm_main (int argc, char *argv[], int id)
 {
     struct arguments arg;
 
     arg.interactive = 0;
     arg.port = 8510;
-
-    ds_program_name = ds_basename (argv[0]);
 
     argp_parse (&argp, argc, argv, ARGP_NO_HELP, 0, &arg);
 
