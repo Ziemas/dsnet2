@@ -62,23 +62,84 @@ ds_format_new (char *fmt, ...)
     return str;
 }
 
+/* XDG basedir lookup */
+
+enum {
+    XDG_CONFIG_HOME,
+    XDG_STATE_HOME,
+};
+
+struct xdg_dir {
+    char *env;
+    char *fallback;
+    char *cache;
+};
+
+static struct xdg_dir xdg_dir[] = {
+    [XDG_CONFIG_HOME] = {"XDG_CONFIG_HOME", ".config"},
+    [XDG_STATE_HOME] = {"XDG_STATE_HOME", ".local/state"},
+};
+
+static char *
+ds_get_xdg_dir (int i)
+{
+    char *path, *home;
+    size_t len;
+
+    if ((path = getenv (xdg_dir[i].env))) {
+        return strdup (path);
+    }
+
+    if ((home = getenv ("HOME")) == NULL) {
+        home = getpwuid (getuid ())->pw_dir;
+    }
+
+    return ds_format_new ("%s/%s/%s/", home, xdg_dir[i].fallback, "dsnet");
+}
+
+int
+ds_mkpath (char *filepath)
+{
+    char *p = filepath;
+    int ret;
+
+    if (!filepath) {
+        return -1;
+    }
+
+    while ((p = strchr (p + 1, '/'))) {
+        *p = 0;
+        ret = mkdir (filepath, 0755);
+        *p = '/';
+
+        if (ret && errno != EEXIST) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
 char *
 ds_get_conf_dir ()
 {
-    char *home = getenv ("HOME");
-    char *xdg_config = getenv ("XDG_CONFIG_HOME");
+    char *path = ds_get_xdg_dir (XDG_CONFIG_HOME);
 
-    return NULL;
+    if (ds_mkpath (path)) {
+        return NULL;
+    }
+
+    return path;
 }
 
 char *
 ds_get_state_dir ()
 {
-    char *home = getenv ("HOME");
-    char *xdg_config = getenv ("XDG_STATE_HOME");
+    char *path = ds_get_xdg_dir (XDG_STATE_HOME);
 
-    if (xdg_config) {
+    if (ds_mkpath (path)) {
+        return NULL;
     }
 
-    return NULL;
+    return path;
 }

@@ -1,4 +1,5 @@
 #include "cmd.h"
+
 #include "list.h"
 #include "misc.h"
 #include "uv.h"
@@ -11,6 +12,7 @@
 
 char *ds_program_name;
 char *prompt_status = "";
+char *histfile;
 
 static char prompt[256];
 static uv_poll_t rl_poll;
@@ -63,6 +65,9 @@ ds_cmd_standard_install ()
 {
     ds_cmd_install ("quit", "", "quit", ds_cmd_quit);
 }
+
+/* TODO: we will want a custom tokenizer
+ * To read more complex expressions in the debugger */
 
 static int
 ds_cmd_execute (char *s)
@@ -133,6 +138,22 @@ ds_signal_cb (uv_signal_t *handle, int signum)
 void
 ds_cmd_init ()
 {
+    char *state_dir = ds_get_state_dir ();
+    char buf[64];
+
+    stifle_history (1000);
+    histfile = NULL;
+
+    if (state_dir) {
+        sprintf (buf, "%s_history", ds_program_name);
+        histfile = ds_format_new ("%s/%s", state_dir, buf);
+        free (state_dir);
+
+        if (histfile) {
+            read_history (histfile);
+        }
+    }
+
     ds_set_prompt_status (" ");
     rl_initialize ();
     rl_callback_handler_install (prompt, ds_linehandler_cb);
@@ -149,4 +170,9 @@ ds_cmd_init ()
 void
 ds_cmd_deinit ()
 {
+    if (histfile) {
+        write_history (histfile);
+    }
+
+    free (histfile);
 }
