@@ -3,7 +3,6 @@ project(dsnet2 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# include(cmake/BuildDep.cmake)
 
 add_subdirectory(dep/libuv EXCLUDE_FROM_ALL)
 
@@ -19,19 +18,19 @@ target_link_libraries(dsnet PRIVATE uv_a PkgConfig::readline PkgConfig::elf PkgC
 add_executable(dsnetm src/dsnetm.c)
 target_link_libraries(dsnetm dsnet)
 
-set(PROGRAMS
-    dsecons
-    dsedb
-    dsefilesv
-    dselist
-    dseping
-    dsestart
-    dsicons
-    dsidb
-    dsifilesv
-    dsiping
-    dsistart
-    dscomp)
+#set(PROGRAMS
+#    dsecons
+#    dsedb
+#    dsefilesv
+#    dselist
+#    dseping
+#    dsestart
+#    dsicons
+#    dsidb
+#    dsifilesv
+#    dsiping
+#    dsistart
+#    dscomp)
 
 #macro(copy_exe output_name)
 #  add_custom_command(
