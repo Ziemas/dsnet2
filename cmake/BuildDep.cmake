@@ -39,3 +39,23 @@ set(readline_includes ${install_dir}/include)
 add_library(readline_a STATIC IMPORTED)
 set_property(TARGET readline_a PROPERTY IMPORTED_LOCATION ${install_dir}/lib/libreadline.a)
 add_dependencies(readline_a readline)
+
+
+# Build elfutils
+ExternalProject_Add(elfutils
+    SOURCE_DIR ${PROJECT_SOURCE_DIR}/dep/elfutils
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure
+        --prefix=<INSTALL_DIR>
+        --disable-shared
+    BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libdw.a
+)
+
+ExternalProject_Get_Property(elfutils install_dir)
+set(elfutils_includes ${install_dir}/include)
+add_library(libdw_a STATIC IMPORTED)
+set_property(TARGET libdw_a PROPERTY IMPORTED_LOCATION ${install_dir}/lib/libdw.a)
+add_dependencies(libdw_a elfutils)
+
+add_library(libdw_a STATIC IMPORTED)
+set_property(TARGET libelf_a PROPERTY IMPORTED_LOCATION ${install_dir}/lib/libelf.a)
+add_dependencies(elf_a elfutils)
