@@ -1,0 +1,3 @@
+Dependencies:
+ - gnu readline
+ - libelf and libdw from elfutils

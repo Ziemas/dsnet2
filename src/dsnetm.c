@@ -209,9 +209,11 @@ parse_opt (int key, char *arg, struct argp_state *state)
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
 int
-dsnetm_main (int argc, char *argv[], int id)
+main (int argc, char *argv[])
 {
     struct arguments arg;
+
+    ds_program_name = ds_basename (argv[0]);
 
     arg.interactive = 0;
     arg.port = 8510;
